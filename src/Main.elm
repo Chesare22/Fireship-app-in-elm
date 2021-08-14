@@ -1,8 +1,9 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, div, h1, img, text)
-import Html.Attributes exposing (src)
+import Html exposing (..)
+import Html.Attributes exposing (name, type_, value)
+import Html.Events exposing (onInput, onSubmit)
 
 
 
@@ -54,10 +55,27 @@ update msg model =
 
 
 view : Model -> Html Msg
-view model =
+view { todoList, currentTodo } =
     div []
-        [ img [ src "/logo.svg" ] []
-        , h1 [] [ text "Your Elm App is working!" ]
+        [ ul []
+            (List.map
+                (\todo -> li [] [ text todo ])
+                todoList
+            )
+        , form [ onSubmit SaveTodo ]
+            [ input
+                [ type_ "text"
+                , name "todo"
+                , value currentTodo
+                , onInput WriteTodo
+                ]
+                []
+            , input
+                [ type_ "submit"
+                , value "Add Todo"
+                ]
+                []
+            ]
         ]
 
 
