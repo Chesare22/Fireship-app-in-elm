@@ -1,20 +1,27 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, text, div, h1, img)
+import Html exposing (Html, div, h1, img, text)
 import Html.Attributes exposing (src)
+
 
 
 ---- MODEL ----
 
 
 type alias Model =
-    {}
+    { todoList : List String
+    , currentTodo : String
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( { todoList = []
+      , currentTodo = ""
+      }
+    , Cmd.none
+    )
 
 
 
@@ -22,12 +29,24 @@ init =
 
 
 type Msg
-    = NoOp
+    = WriteTodo String
+    | SaveTodo
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        WriteTodo todo ->
+            ( { model | currentTodo = todo }
+            , Cmd.none
+            )
+
+        SaveTodo ->
+            ( { currentTodo = ""
+              , todoList = model.todoList ++ [ model.currentTodo ]
+              }
+            , Cmd.none
+            )
 
 
 
