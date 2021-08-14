@@ -1,9 +1,16 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (name, type_, value)
 import Html.Events exposing (onInput, onSubmit)
+
+
+
+---- PORTS ----
+
+
+port saveChanges : List String -> Cmd msg
 
 
 
@@ -16,9 +23,13 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( { todoList = []
+type alias Flags =
+    List String
+
+
+init : Flags -> ( Model, Cmd Msg )
+init todoList =
+    ( { todoList = todoList
       , currentTodo = ""
       }
     , Cmd.none
@@ -43,10 +54,14 @@ update msg model =
             )
 
         SaveTodo ->
+            let
+                newTodoList =
+                    model.todoList ++ [ model.currentTodo ]
+            in
             ( { currentTodo = ""
-              , todoList = model.todoList ++ [ model.currentTodo ]
+              , todoList = newTodoList
               }
-            , Cmd.none
+            , saveChanges newTodoList
             )
 
 
@@ -83,11 +98,11 @@ view { todoList, currentTodo } =
 ---- PROGRAM ----
 
 
-main : Program () Model Msg
+main : Program Flags Model Msg
 main =
     Browser.element
         { view = view
-        , init = \_ -> init
+        , init = init
         , update = update
         , subscriptions = always Sub.none
         }

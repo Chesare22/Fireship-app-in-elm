@@ -1,9 +1,16 @@
-import './main.css';
-import { Elm } from './Main.elm';
-import * as serviceWorker from './serviceWorker';
+import "./main.css";
+import { Elm } from "./Main.elm";
+import * as serviceWorker from "./serviceWorker";
 
-Elm.Main.init({
-  node: document.getElementById('root')
+const initialTodoList = JSON.parse(localStorage.getItem("todos")) || [];
+
+const app = Elm.Main.init({
+  node: document.getElementById("root"),
+  flags: initialTodoList,
+});
+
+app.ports.saveChanges.subscribe((todoList) => {
+  localStorage.setItem("todos", JSON.stringify(todoList));
 });
 
 // If you want your app to work offline and load faster, you can change
