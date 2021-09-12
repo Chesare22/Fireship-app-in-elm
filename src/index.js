@@ -1,6 +1,5 @@
 import "./main.css";
 import { Elm } from "./Main.elm";
-import * as serviceWorker from "./serviceWorker";
 
 const initialTodoList = JSON.parse(localStorage.getItem("todos")) || [];
 
