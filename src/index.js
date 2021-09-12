@@ -12,8 +12,3 @@ const app = Elm.Main.init({
 app.ports.saveChanges.subscribe((todoList) => {
   localStorage.setItem("todos", JSON.stringify(todoList));
 });
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
